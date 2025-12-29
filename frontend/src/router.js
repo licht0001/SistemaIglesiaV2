@@ -1,27 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Landing from './views/Landing.vue';
-import Login from './views/Login.vue';
 import MainLayout from './layouts/MainLayout.vue';
-import Dashboard from './views/Dashboard.vue';
-import Members from './views/Members.vue';
-import Finances from './views/Finances.vue';
-import Activities from './views/Activities.vue';
-import ServiceAreas from './views/ServiceAreas.vue';
-import Users from './views/Users.vue';
-import Settings from './views/Settings.vue';
-import LandingSettings from './views/LandingSettings.vue';
-import PrayerRequests from './views/PrayerRequests.vue';
 
 const routes = [
     {
         path: '/',
         name: 'landing',
-        component: Landing,
+        component: () => import('./views/Landing.vue'),
     },
     {
         path: '/login',
         name: 'login',
-        component: Login,
+        component: () => import('./views/Login.vue'),
         meta: { requiresGuest: true },
     },
     {
@@ -32,47 +21,47 @@ const routes = [
             {
                 path: 'dashboard',
                 name: 'dashboard',
-                component: Dashboard,
+                component: () => import('./views/Dashboard.vue'),
             },
             {
                 path: 'members',
                 name: 'members',
-                component: Members,
+                component: () => import('./views/Members.vue'),
             },
             {
                 path: 'finances',
                 name: 'finances',
-                component: Finances,
+                component: () => import('./views/Finances.vue'),
             },
             {
                 path: 'activities',
                 name: 'activities',
-                component: Activities,
+                component: () => import('./views/Activities.vue'),
             },
             {
                 path: 'service-areas',
                 name: 'service-areas',
-                component: ServiceAreas,
+                component: () => import('./views/ServiceAreas.vue'),
             },
             {
                 path: 'users',
                 name: 'users',
-                component: Users,
+                component: () => import('./views/Users.vue'),
             },
             {
                 path: 'settings',
                 name: 'settings',
-                component: Settings,
+                component: () => import('./views/Settings.vue'),
             },
             {
                 path: 'landing-settings',
                 name: 'landing-settings',
-                component: LandingSettings,
+                component: () => import('./views/LandingSettings.vue'),
             },
             {
                 path: 'prayer-requests',
                 name: 'prayer-requests',
-                component: PrayerRequests,
+                component: () => import('./views/PrayerRequests.vue'),
             },
         ],
     },
