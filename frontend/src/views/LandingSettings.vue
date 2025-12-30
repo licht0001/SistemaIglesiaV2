@@ -35,8 +35,8 @@
                     <span class="font-medium text-sm">Comunidad (Bento)</span>
                 </div>
                 <div @click="activeTab = 'info'" :class="activeTab === 'info' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white hover:bg-slate-50 text-slate-600'" class="p-3 rounded-xl border border-slate-200 cursor-pointer flex items-center gap-3 transition-all">
-                    <i class="pi pi-info-circle"></i>
-                    <span class="font-medium text-sm">¿Qué esperar? / Labor</span>
+                    <i class="pi pi-compass"></i>
+                    <span class="font-medium text-sm">Misión y Visión</span>
                 </div>
                 <div @click="activeTab = 'contact'" :class="activeTab === 'contact' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white hover:bg-slate-50 text-slate-600'" class="p-3 rounded-xl border border-slate-200 cursor-pointer flex items-center gap-3 transition-all">
                     <i class="pi pi-map-marker"></i>
@@ -209,15 +209,15 @@
 
                 <!-- 7. INFO / WHAT TO EXPECT (Nuevo) -->
                 <div v-if="activeTab === 'info'" class="space-y-6 animate-fade-in">
-                    <h3 class="font-semibold text-slate-800 border-b border-slate-100 pb-2">Información de la Iglesia</h3>
+                    <h3 class="font-semibold text-slate-800 border-b border-slate-100 pb-2">Identidad e Información</h3>
                     <div class="space-y-4">
                         <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase">¿Qué esperar de nuestras reuniones?</label>
-                            <Textarea v-model="config.info.whatToExpect" class="w-full" rows="4" placeholder="Describe el ambiente, la música, etc." />
+                            <label class="text-xs font-bold text-slate-500 uppercase">Misión</label>
+                            <Textarea v-model="config.info.whatToExpect" class="w-full" rows="4" placeholder="Describe la misión y propósito fundamental de la iglesia." />
                         </div>
                         <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase">Labor Social / Ministerios de Ayuda</label>
-                            <Textarea v-model="config.info.socialWork" class="w-full" rows="4" placeholder="Describe cómo ayudan a la comunidad." />
+                            <label class="text-xs font-bold text-slate-500 uppercase">Visión</label>
+                            <Textarea v-model="config.info.socialWork" class="w-full" rows="4" placeholder="Describe la visión a futuro y el impacto deseado." />
                         </div>
                     </div>
                 </div>

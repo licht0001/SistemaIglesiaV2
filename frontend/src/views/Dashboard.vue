@@ -62,6 +62,30 @@
                 </div>
             </div>
 
+            <!-- Nuevo: Adultos Viudos -->
+            <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-3 hover:shadow-md transition-all duration-300 group cursor-pointer border-l-4 border-l-gray-600"
+                 @click="openDetailModal('widowed')">
+                <div class="p-2.5 bg-gray-50 rounded-lg group-hover:bg-gray-100 transition-colors">
+                     <i class="pi pi-minus-circle text-gray-600 group-hover:rotate-180 transition-transform"></i>
+                </div>
+                <div>
+                    <p class="text-[11px] text-slate-500 leading-tight">Viudos</p>
+                    <p class="text-lg font-bold text-slate-900">{{ stats?.breakdown?.adults_widowed || 0 }}</p>
+                </div>
+            </div>
+
+            <!-- Nuevo: Adultos Divorciados -->
+            <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-3 hover:shadow-md transition-all duration-300 group cursor-pointer border-l-4 border-l-orange-500"
+                 @click="openDetailModal('divorced')">
+                <div class="p-2.5 bg-orange-50 rounded-lg group-hover:bg-orange-100 transition-colors">
+                     <i class="pi pi-sort-alt-slash text-orange-500 group-hover:scale-110 transition-transform"></i>
+                </div>
+                <div>
+                    <p class="text-[11px] text-slate-500 leading-tight">Divorciados</p>
+                    <p class="text-lg font-bold text-slate-900">{{ stats?.breakdown?.adults_divorced || 0 }}</p>
+                </div>
+            </div>
+
             <!-- 6. Adolescentes -->
             <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-3 hover:shadow-md transition-all duration-300 group cursor-pointer border-l-4 border-l-violet-500"
                  @click="openDetailModal('adolescents')">
@@ -695,6 +719,14 @@ const openDetailModal = async (type) => {
         case 'single':
             detailTitle.value = 'Detalle: Adultos Solteros';
             filters = { category: 'adulto', marital: 'single' };
+            break;
+        case 'widowed':
+            detailTitle.value = 'Detalle: Adultos Viudos';
+            filters = { category: 'adulto', marital: 'widowed' };
+            break;
+        case 'divorced':
+            detailTitle.value = 'Detalle: Adultos Divorciados';
+            filters = { category: 'adulto', marital: 'divorced' };
             break;
         case 'adolescents':
             detailTitle.value = 'Detalle: Adolescentes';

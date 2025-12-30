@@ -14,9 +14,10 @@
                 </div>
 
                 <nav class="hidden md:flex items-center gap-6 text-sm">
-                    <a @click.prevent="scrollToSection('about')" href="#about" class="hover:text-emerald-700 transition-colors cursor-pointer font-medium">Sobre el sistema</a>
-                    <a @click.prevent="scrollToSection('modules')" href="#modules" class="hover:text-emerald-700 transition-colors cursor-pointer font-medium">Módulos</a>
-                    <a @click.prevent="scrollToSection('features')" href="#features" class="hover:text-emerald-700 transition-colors cursor-pointer font-medium">Beneficios</a>
+                    <a @click.prevent="scrollToSection('about')" href="#about" class="hover:text-emerald-700 transition-colors cursor-pointer font-medium">Nuestra Iglesia</a>
+                    <a @click.prevent="scrollToSection('modules')" href="#modules" class="hover:text-emerald-700 transition-colors cursor-pointer font-medium">Servicios</a>
+                    <a @click.prevent="scrollToSection('features')" href="#features" class="hover:text-emerald-700 transition-colors cursor-pointer font-medium">Identidad</a>
+                    <a v-if="config.video.youtubeUrl || config.video.title" @click.prevent="scrollToSection('video')" href="#video" class="hover:text-emerald-700 transition-colors cursor-pointer font-medium">Destacado</a>
                     <a @click.prevent="scrollToSection('contact')" href="#contact" class="hover:text-emerald-700 transition-colors cursor-pointer font-medium">Contacto</a>
                 </nav>
 
@@ -179,37 +180,38 @@
             <!-- Sobre el sistema / Qué esperar (Nuevo Mix) -->
             <section id="features" class="py-20 bg-white overflow-hidden relative scroll-mt-20">
                 <div class="max-w-6xl mx-auto px-4 relative z-10">
-                    <div class="grid md:grid-cols-2 gap-16 items-center">
-                        <div class="space-y-6">
+                    <div class="space-y-10">
+                        <div class="text-center max-w-3xl mx-auto">
                             <h2 class="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
-                                {{ config.info.socialWork ? 'Comprometidos con el Reino y la Sociedad' : 'Pensado para el pastor y el equipo administrativo.' }}
+                                {{ config.info.socialWork ? 'Nuestra Identidad' : 'Pensado para el pastor y el equipo administrativo.' }}
                             </h2>
-                            <div class="space-y-4">
-                                <div class="p-5 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-2xl">
-                                    <h4 class="font-bold text-emerald-900 mb-1 flex items-center gap-2">
-                                        <i class="pi pi-heart-fill text-sm"></i> ¿Qué esperar?
-                                    </h4>
-                                    <p class="text-emerald-800 text-sm leading-relaxed">{{ config.info.whatToExpect }}</p>
-                                </div>
-                                <div v-if="config.info.socialWork" class="p-5 bg-blue-50 border-l-4 border-blue-500 rounded-r-2xl">
-                                    <h4 class="font-bold text-blue-900 mb-1 flex items-center gap-2">
-                                        <i class="pi pi-globe text-sm"></i> Labor Social
-                                    </h4>
-                                    <p class="text-blue-800 text-sm leading-relaxed">{{ config.info.socialWork }}</p>
-                                </div>
-                            </div>
                         </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-200 shadow-inner space-y-2">
-                                <i class="pi pi-users text-emerald-600 text-xl"></i>
-                                <h5 class="font-bold text-slate-800 text-sm">Comunidad</h5>
-                                <p class="text-[11px] text-slate-500 italic">Un lugar para toda la familia.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- Tarjeta Misión -->
+                            <div class="p-8 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-3xl shadow-sm hover:shadow-md transition-all group">
+                                <div class="flex items-start gap-4">
+                                    <div class="h-12 w-12 shrink-0 bg-emerald-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <i class="pi pi-bullseye text-emerald-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-emerald-900 mb-2 text-lg">Misión</h4>
+                                        <p class="text-emerald-800 text-sm leading-relaxed">{{ config.info.whatToExpect }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="bg-slate-900 p-6 rounded-[2rem] text-white shadow-xl space-y-2 mt-8">
-                                <i class="pi pi-shield text-emerald-400 text-xl"></i>
-                                <h5 class="font-bold text-sm">Seguridad</h5>
-                                <p class="text-[11px] text-emerald-200/60 italic">Gestión segura de datos.</p>
+
+                            <!-- Tarjeta Visión -->
+                            <div v-if="config.info.socialWork" class="p-8 bg-blue-50 border-l-4 border-blue-500 rounded-r-3xl shadow-sm hover:shadow-md transition-all group">
+                                <div class="flex items-start gap-4">
+                                    <div class="h-12 w-12 shrink-0 bg-blue-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <i class="pi pi-compass text-blue-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-blue-900 mb-2 text-lg">Visión</h4>
+                                        <p class="text-blue-800 text-sm leading-relaxed">{{ config.info.socialWork }}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -281,63 +283,10 @@
                 </div>
             </section>
 
-            <!-- Módulos principales -->
-            <section id="modules" class="py-16 bg-slate-50">
-                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 text-center sm:text-left">
-                        <div>
-                            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
-                                Módulos Principales
-                            </h2>
-                            <p class="text-sm sm:text-base text-slate-600">
-                                Diseñados específicamente para la administración de la congregación moderna.
-                            </p>
-                        </div>
-                        <RouterLink to="/login"><Button label="Ver demo del panel" icon="pi pi-chart-bar" severity="secondary" class="!text-sm" /></RouterLink>
-                    </div>
 
-                    <div class="grid md:grid-cols-3 gap-6 text-sm">
-                        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-lg transition-shadow">
-                            <div class="flex items-center gap-3 mb-3">
-                                <span class="h-10 w-10 rounded-xl bg-emerald-100 flex items-center justify-center shadow-inner">
-                                    <i class="pi pi-id-card text-emerald-700"></i>
-                                </span>
-                                <p class="font-bold text-slate-900">Membresía</p>
-                            </div>
-                            <p class="text-slate-600 leading-relaxed">
-                                Registro completo de miembros, bautizos, matrimonios y búsqueda avanzada por grupos y edades.
-                            </p>
-                        </div>
-
-                        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-lg transition-shadow">
-                            <div class="flex items-center gap-3 mb-3">
-                                <span class="h-10 w-10 rounded-xl bg-emerald-100 flex items-center justify-center shadow-inner">
-                                    <i class="pi pi-wallet text-emerald-700"></i>
-                                </span>
-                                <p class="font-bold text-slate-900">Finanzas</p>
-                            </div>
-                            <p class="text-slate-600 leading-relaxed">
-                                Control transparente de ingresos, ofrendas y gastos con reportes automáticos para asambleas.
-                            </p>
-                        </div>
-
-                        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-lg transition-shadow">
-                            <div class="flex items-center gap-3 mb-3">
-                                <span class="h-10 w-10 rounded-xl bg-emerald-100 flex items-center justify-center shadow-inner">
-                                    <i class="pi pi-calendar text-emerald-700"></i>
-                                </span>
-                                <p class="font-bold text-slate-900">Actividades</p>
-                            </div>
-                            <p class="text-slate-600 leading-relaxed">
-                                Centraliza el calendario de cultos, reuniones y eventos especiales en una sola vista ministerial.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <!-- Video de YouTube (Nuevo) -->
-            <section v-if="config.video.youtubeUrl || config.video.title" class="py-20 bg-slate-900 text-white relative overflow-hidden">
+            <section id="video" v-if="config.video.youtubeUrl || config.video.title" class="py-20 bg-slate-900 text-white relative overflow-hidden">
                 <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
                     <h2 v-if="config.video.title" class="text-3xl font-bold mb-8">{{ config.video.title }}</h2>
                     <div v-if="config.video.youtubeUrl && getYoutubeId(config.video.youtubeUrl)" class="aspect-video rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(16,185,129,0.3)] border-4 border-slate-800">

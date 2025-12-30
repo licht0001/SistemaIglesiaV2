@@ -110,71 +110,91 @@
             </DataTable>
         </section>
 
-        <!-- Modal de Creación/Edición -->
-        <Dialog v-model:visible="modalVisible" :header="isEditing ? 'Editar Miembro' : 'Nuevo Miembro'" modal class="w-full max-w-2xl">
-            <div class="grid md:grid-cols-2 gap-4">
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Nombre *</label>
-                    <InputText v-model="form.first_name" class="w-full" size="small" />
+        <Dialog v-model:visible="modalVisible" :header="isEditing ? 'Editar Miembro' : 'Nuevo Miembro'" modal class="w-full max-w-3xl">
+            <div class="grid grid-cols-12 gap-3">
+                <!-- Fila 1 -->
+                <div class="col-span-12 md:col-span-6 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Nombre *</label>
+                    <InputText v-model="form.first_name" class="w-full h-9" size="small" />
                 </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Apellidos *</label>
-                    <InputText v-model="form.last_name" class="w-full" size="small" />
+                <div class="col-span-12 md:col-span-6 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Apellidos *</label>
+                    <InputText v-model="form.last_name" class="w-full h-9" size="small" />
                 </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Categoría *</label>
-                    <Dropdown v-model="form.category" :options="categoryOptions" optionLabel="label" optionValue="value" class="w-full" />
+
+                <!-- Fila 2 -->
+                <div class="col-span-12 md:col-span-7 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Email</label>
+                    <InputText v-model="form.email" class="w-full h-9" size="small" />
                 </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Fecha de Nacimiento</label>
-                    <Calendar v-model="form.birth_date" dateFormat="yy-mm-dd" class="w-full" showIcon />
+                <div class="col-span-12 md:col-span-5 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Teléfono</label>
+                    <InputText v-model="form.phone" class="w-full h-9" size="small" />
                 </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Género</label>
-                    <Dropdown v-model="form.gender" :options="genderOptions" optionLabel="label" optionValue="value" class="w-full" />
+
+                <!-- Fila 3 -->
+                <div class="col-span-12 md:col-span-4 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Fecha de Nacimiento</label>
+                    <Calendar v-model="form.birth_date" dateFormat="yy-mm-dd" class="w-full h-9" showIcon inputClass="!py-1" />
                 </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Teléfono</label>
-                    <InputText v-model="form.phone" class="w-full" size="small" />
+                <div class="col-span-6 md:col-span-4 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Género</label>
+                    <Dropdown v-model="form.gender" :options="genderOptions" optionLabel="label" optionValue="value" class="w-full h-9 flex items-center" />
                 </div>
-                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Email</label>
-                    <InputText v-model="form.email" class="w-full" size="small" />
+                <div class="col-span-6 md:col-span-4 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Estado Civil</label>
+                    <Dropdown v-model="form.marital_status" :options="maritalOptions" optionLabel="label" optionValue="value" class="w-full h-9 flex items-center" placeholder="-" />
                 </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Dirección</label>
-                    <InputText v-model="form.address" class="w-full" size="small" />
+
+                <!-- Fila 4 -->
+                <div class="col-span-12 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Dirección</label>
+                    <InputText v-model="form.address" class="w-full h-9" size="small" />
                 </div>
-                <div class="space-y-1" v-if="form.category === 'adulto'">
-                    <label class="text-xs font-medium text-slate-600">Estado Civil</label>
-                    <Dropdown v-model="form.marital_status" :options="maritalOptions" optionLabel="label" optionValue="value" class="w-full" />
+
+                <!-- Fila 5 -->
+                <div class="col-span-6 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Categoría *</label>
+                    <Dropdown v-model="form.category" :options="categoryOptions" optionLabel="label" optionValue="value" class="w-full h-9 flex items-center" />
                 </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Bautizado</label>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" v-model="form.baptized" id="baptized-toggle" class="form-checkbox h-4 w-4 text-emerald-600" />
-                        <label for="baptized-toggle" class="text-xs">{{ form.baptized ? 'Sí' : 'No' }}</label>
+                <div class="col-span-6 space-y-1">
+                    <label class="text-xs font-semibold text-slate-500">Estado Espiritual</label>
+                    <Dropdown v-model="form.status" :options="statusOptions" optionLabel="label" optionValue="value" class="w-full h-9 flex items-center" />
+                </div>
+
+                <!-- Sección Agrupada: Roles y Sacramentos -->
+                <div class="col-span-12 bg-slate-50 px-4 py-3 rounded-lg border border-slate-100 mt-1">
+                    <div class="flex items-center justify-between mb-2">
+                         <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Información Eclesiástica</h3>
                     </div>
-                </div>
-                <div v-if="form.baptized" class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Fecha de Bautismo</label>
-                    <Calendar v-model="form.baptism_date" dateFormat="yy-mm-dd" class="w-full" showIcon />
-                </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">Estado Espiritual</label>
-                    <Dropdown v-model="form.status" :options="statusOptions" optionLabel="label" optionValue="value" class="w-full" />
-                </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-600">¿Es Servidor?</label>
-                    <div class="flex items-center gap-2 mt-1">
-                        <input type="checkbox" v-model="form.is_server" id="server-toggle" class="form-checkbox h-4 w-4 text-emerald-600 rounded" />
-                        <label for="server-toggle" class="text-xs text-slate-500">{{ form.is_server ? 'Sí, es servidor' : 'No en este momento' }}</label>
+                    <div class="grid grid-cols-2 gap-6">
+                        <!-- Bautismo -->
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-center gap-2 h-6">
+                                <input type="checkbox" v-model="form.baptized" id="baptized-toggle" class="form-checkbox h-4 w-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 transition-colors" />
+                                <label for="baptized-toggle" class="text-xs font-medium text-slate-700 cursor-pointer select-none">¿Está Bautizado?</label>
+                            </div>
+                            <div v-if="form.baptized" class="animate-fade-in-down pl-6">
+                                <Calendar v-model="form.baptism_date" dateFormat="yy-mm-dd" class="w-full h-8 text-xs" showIcon inputClass="!py-1 !text-xs" placeholder="Fecha Bautismo" />
+                            </div>
+                        </div>
+
+                        <!-- Servidor -->
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-2 h-6">
+                                <input type="checkbox" v-model="form.is_server" id="server-toggle" class="form-checkbox h-4 w-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 transition-colors" />
+                                <label for="server-toggle" class="text-xs font-medium text-slate-700 cursor-pointer select-none">¿Es Servidor/Líder?</label>
+                            </div>
+                            <p class="text-[10px] text-slate-400 pl-6 leading-tight">Activa si ejerce liderazgo.</p>
+                        </div>
                     </div>
                 </div>
             </div>
             <template #footer>
-                <Button label="Cancelar" icon="pi pi-times" @click="closeModal" text severity="secondary" />
-                <Button label="Guardar" icon="pi pi-check" @click="saveMember" :loading="saving" />
+                <div class="pt-2">
+                    <Button label="Cancelar" icon="pi pi-times" @click="closeModal" text severity="secondary" size="small" />
+                    <Button label="Guardar" icon="pi pi-check" @click="saveMember" :loading="saving" size="small" />
+                </div>
             </template>
         </Dialog>
     </div>

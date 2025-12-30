@@ -60,7 +60,7 @@
 
                 <Column field="status" header="Estado" :sortable="true" style="width: 150px">
                     <template #body="slotProps">
-                        <Tag :value="getStatusLabel(slotProps.data.status)" :severity="getStatusSeverity(slotProps.data.status)" />
+                        <Tag :value="getStatusLabel(slotProps.data.status)" :class="getStatusClass(slotProps.data.status)" />
                     </template>
                 </Column>
 
@@ -299,18 +299,25 @@ const getStatusLabel = (status) => {
     const labels = {
         'pendiente': 'Pendiente',
         'mensionado': 'Mencionado',
+        'mencionado': 'Mencionado', // Support correct spelling
         'completado': 'Completado'
     };
     return labels[status] || status;
 };
 
+// Deprecated in favor of direct classes, but kept if needed elsewhere
 const getStatusSeverity = (status) => {
-    const severities = {
-        'pendiente': 'warning',
-        'mensionado': 'info',
-        'completado': 'success'
+    return 'null'; 
+};
+
+const getStatusClass = (status) => {
+    const classes = {
+        'pendiente': '!bg-red-100 !text-red-700',
+        'mensionado': '!bg-yellow-100 !text-yellow-700',
+        'mencionado': '!bg-yellow-100 !text-yellow-700',
+        'completado': '!bg-green-100 !text-green-700'
     };
-    return severities[status] || 'secondary';
+    return classes[status] || '!bg-slate-100 !text-slate-700';
 };
 
 const formatDate = (dateString) => {
