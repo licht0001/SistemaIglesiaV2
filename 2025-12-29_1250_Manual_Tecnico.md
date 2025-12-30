@@ -1,7 +1,7 @@
 # Manual Técnico - SistemaIglesiaV2
 
-**Versión:** 2.0
-**Fecha:** 29 de Diciembre de 2025
+**Versión:** 2.1
+**Fecha:** 30 de Diciembre de 2025
 
 ---
 
@@ -13,7 +13,7 @@ Para ejecutar este proyecto en un entorno local o servidor, necesita:
     *   Composer 2.x
     *   Extensión PHP PDO MySQL
 *   **Frontend:**
-    *   Node.js >= 18.0
+    *   Node.js >= 20.0 (Recomendado)
     *   NPM (incluido con Node)
 *   **Base de Datos:**
     *   MySQL 8.0 o MariaDB 10.x
@@ -23,29 +23,25 @@ Para ejecutar este proyecto en un entorno local o servidor, necesita:
 ---
 
 ## 2. Estructura del Proyecto
-El proyecto utiliza una estructura de **Monorepo Híbrido** donde backend y frontend conviven en la carpeta raíz `SistemaIglesiaV2` pero funcionan como aplicaciones separadas.
+El proyecto utiliza una estructura de **Monorepo Híbrido** donde backend y frontend conviven en la carpeta raíz `SistemaIglesiaV2`.
 
 ```
 SistemaIglesiaV2/
 ├── backend/            # Aplicación Laravel (API)
-│   ├── app/            # Controladores, Modelos
-│   ├── config/         # Configuración del framework
-│   ├── database/       # Migraciones y Seeders
-│   ├── public/         # Entry point, almacenamiento público (imágenes)
-│   ├── routes/         # Definición de rutas (api.php es la clave)
-│   └── .env            # Variables de entorno (DB, App Key)
+│   ├── app/            # Controladores, Modelos (SettingsController.php clave)
+│   ├── database/       # Migraciones y Seeders (PrayerRequests, Members, etc.)
+│   ├── public/         # Almacenamiento público de imágenes
+│   └── routes/         # api.php define la comunicación
 │
-├── frontend/           # Aplicación Vue.js (Cliente)
+├── frontend/           # Aplicación Vue.js 3
 │   ├── src/
-│   │   ├── components/ # Componentes reutilizables (Modales, botones)
-│   │   ├── services/   # Lógica de comunicación con API (Axios)
-│   │   ├── views/      # Páginas (Landing, Dashboard)
-│   │   └── main.js     # Punto de entrada Vue
-│   ├── public/         # Assets estáticos
-│   ├── index.html      # HTML Base
-│   └── vite.config.js  # Configuración de Vite (Proxy al backend)
+│   │   ├── components/ # Modales compactos y reutilizables
+│   │   ├── services/   # Clientes Axios (members.js, settings.js)
+│   │   ├── views/      # Vistas (Dashboard.vue, Landing.vue, Members.vue)
+│   │   └── main.js     # Configuración PrimeVue
+│   └── vite.config.js  # Proxy al backend
 │
-└── Documentacion/      # Manuales y registros (.md)
+└── 2025-XX-XX_...md  # Registro histórico de cambios y manuales
 ```
 
 ---
@@ -55,49 +51,51 @@ SistemaIglesiaV2/
 ### Paso 1: Configurar Backend
 1.  Navegar a la carpeta: `cd backend`
 2.  Instalar dependencias: `composer install`
-3.  Configurar entorno: `cp .env.example .env`
-    *   Ajustar `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
+3.  Configurar entorno: `cp .env.example .env` (Ajustar credenciales DB).
 4.  Generar llave: `php artisan key:generate`
 5.  Migrar base de datos: `php artisan migrate`
-6.  (Opcional) Enlace simbólico para storage: `php artisan storage:link`
-7.  Iniciar servidor: `php artisan serve` (Corre en puerto 8000).
+6.  Enlace de storage: `php artisan storage:link`
+7.  Iniciar servidor: `php artisan serve` (Puerto 8000).
 
 ### Paso 2: Configurar Frontend
 1.  Navegar a la carpeta: `cd frontend`
 2.  Instalar dependencias: `npm install`
-3.  Iniciar servidor de desarrollo: `npm run dev` (Corre en puerto 5173).
-
-**Nota Importante sobre Proxy:**
-El archivo `frontend/vite.config.js` tiene configurado un proxy para redirigir las peticiones que empiezan con `/api` hacia `http://127.0.0.1:8000`. Esto evita problemas de CORS en desarrollo.
+3.  Iniciar servidor de desarrollo: `npm run dev` (Puerto 5173).
 
 ---
 
-## 4. Endpoints Clave (API)
+## 4. Lógica de Negocio y UI Personalizada
+
+### 4.1 Código de Colores en Peticiones
+En `PrayerRequests.vue`, el estado de las etiquetas se gestiona mediante la función `getStatusClass(status)`. Se utilizan clases de Tailwind con `!important` para asegurar el cumplimiento visual:
+*   **Pendiente:** `!bg-red-100 !text-red-700`
+*   **Mencionado:** `!bg-yellow-100 !text-yellow-700`
+*   **Completado:** `!bg-green-100 !text-green-700`
+
+### 4.2 Desglose de Dashboard
+El archivo `Dashboard.vue` incluye tarjetas para **Viudos** (`widowed`) y **Divorciados** (`divorced`). 
+*   **Función `openDetailModal(type)`:** Realiza peticiones dinámicas al servicio de miembros aplicando filtros por `marital`.
+*   **Filtros:** Se envían como objetos `{ category: 'adulto', marital: '...' }` al backend.
+
+### 4.3 Redes Sociales y Reactividad
+En `Landing.vue`, la carga de configuración utiliza el operador spread (`...`) para fusionar objetos anidados.
+*   **TikTok:** Se utiliza un SVG personalizado con dimensiones `40x40` para mantener consistencia con los iconos de FontAwesome (`text-[40px]`).
+*   **Visibilidad:** Se inicializan booleanos (`showFacebook`, etc.) en el cliente si el backend devuelve `undefined`.
+
+### 4.4 Compactación de Formularios (Members.vue)
+El modal de Miembros utiliza un sistema de **Grid de 12 columnas** (`grid-cols-12`) con espacios reducidos (`gap-3`) y clases `h-9` en los inputs para maximizar el uso del espacio en pantallas medianas.
+
+---
+
+## 5. Endpoints Clave (API)
 
 | Método | Ruta | Descripción |
 | :--- | :--- | :--- |
-| **GET** | `/api/settings/landing` | Obtiene la configuración pública del Landing. |
-| **PUT** | `/api/settings/landing` | Actualiza la configuración (Requiere Auth/Admin). |
-| **POST** | `/api/prayer-requests` | Crea una nueva petición (Público). |
-| **GET** | `/api/prayer-requests` | Lista peticiones (Admin). |
-| **PUT** | `/api/prayer-requests/{id}` | Actualiza estado de petición (Admin). |
+| **GET** | `/api/settings/landing` | Obtiene la configuración (con Misión/Visión). |
+| **GET** | `/api/members` | Obtiene lista con filtros (bautizado, marital, etc). |
+| **POST** | `/api/prayer-requests` | Captura peticiones desde el landing. |
 
-## 5. Detalles de Implementación Recientes
-
-### 5.1 Persistencia de Configuración (Settings)
-Se usa un modelo `Setting` con una columna `value` tipo JSON.
-*   **Controlador:** `SettingsController.php`
-*   **Lógica:** Al actualizar, se hace un `merge` recursivo entre la configuración existente y la nueva para evitar pérdida de datos si el frontend envía un objeto parcial.
-
-### 5.2 Manejo de Imágenes
-*   El frontend incluye un helper `getImageUrl(url)`.
-*   Detecta rutas locales (ej. `backend/public/img/...`) y las reescribe para apuntar al servidor API (`http://localhost:8000/img/...`).
-*   Esto permite al usuario subir imágenes a la carpeta `public` del backend y referenciarlas fácilmente.
-
----
-
-## 6. Comandos Útiles
-
-*   **Crear migración:** `php artisan make:migration create_nombre_tabla`
-*   **Limpiar caché Laravel:** `php artisan optimize:clear`
-*   **Construir Frontend para Producción:** `npm run build` (Genera carpeta `dist` en frontend).
+## 6. Comandos de Mantenimiento
+*   **Limpiar caché:** `php artisan optimize:clear`
+*   **Exportar Miembros:** `php artisan members:export` (Si está implementado vía comando).
+*   **Construir Prod:** `npm run build` en el frontend.
