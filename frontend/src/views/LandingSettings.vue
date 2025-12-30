@@ -258,33 +258,82 @@
                     <h3 class="font-semibold text-slate-800 border-b border-slate-100 pb-2">Redes Sociales e Información</h3>
                     <div class="grid md:grid-cols-2 gap-6">
                             <div class="space-y-4">
+                                <!-- WhatsApp -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="space-y-2">
                                         <label class="text-xs font-bold text-slate-500 uppercase flex items-center gap-2">
-                                            <i class="pi pi-whatsapp text-emerald-500"></i> WhatsApp (Nro con prefijo)
+                                            <i class="pi pi-whatsapp text-emerald-500"></i> WhatsApp
                                         </label>
                                         <InputText v-model="config.contact.whatsapp" class="w-full" placeholder="Ej: 59178945612" />
                                     </div>
                                     <div class="space-y-2">
                                         <label class="text-xs font-bold text-slate-500 uppercase flex items-center gap-2 text-blue-600">
-                                            <i class="pi pi-comment"></i> Mensaje Personalizado
+                                            <i class="pi pi-comment"></i> Mensaje W.A.
                                         </label>
-                                        <InputText v-model="config.contact.whatsappMessage" class="w-full" placeholder="Ej: Hola, quisiera más información..." />
+                                        <InputText v-model="config.contact.whatsappMessage" class="w-full" placeholder="Ej: Hola..." />
                                     </div>
                                 </div>
-                            <div class="space-y-2">
-                                <label class="text-xs font-bold text-slate-500 uppercase flex items-center gap-2">
-                                    <i class="pi pi-facebook text-blue-600"></i> Facebook URL
-                                </label>
-                                <InputText v-model="config.contact.facebook" class="w-full" placeholder="https://facebook.com/..." />
+                                
+                                <div class="border-t border-slate-100 my-4"></div>
+
+                                <!-- Facebook -->
+                                <div class="flex items-end gap-3">
+                                    <div class="space-y-1 flex-1">
+                                        <label class="text-xs font-bold text-slate-500 uppercase flex items-center gap-2">
+                                            <i class="pi pi-facebook text-blue-600"></i> Facebook
+                                        </label>
+                                        <InputText v-model="config.contact.facebook" class="w-full" placeholder="https://facebook.com/..." />
+                                    </div>
+                                    <div class="flex flex-col items-center gap-1 pb-1">
+                                        <span class="text-[10px] text-slate-400 font-bold uppercase">Mostrar</span>
+                                        <InputSwitch v-model="config.contact.showFacebook" />
+                                    </div>
+                                </div>
+
+                                <!-- Instagram -->
+                                <div class="flex items-end gap-3">
+                                    <div class="space-y-1 flex-1">
+                                        <label class="text-xs font-bold text-slate-500 uppercase flex items-center gap-2">
+                                            <i class="pi pi-instagram text-pink-500"></i> Instagram
+                                        </label>
+                                        <InputText v-model="config.contact.instagram" class="w-full" placeholder="https://instagram.com/..." />
+                                    </div>
+                                    <div class="flex flex-col items-center gap-1 pb-1">
+                                        <span class="text-[10px] text-slate-400 font-bold uppercase">Mostrar</span>
+                                        <InputSwitch v-model="config.contact.showInstagram" />
+                                    </div>
+                                </div>
+
+                                <!-- YouTube -->
+                                <div class="flex items-end gap-3">
+                                    <div class="space-y-1 flex-1">
+                                        <label class="text-xs font-bold text-slate-500 uppercase flex items-center gap-2">
+                                            <i class="pi pi-youtube text-red-600"></i> YouTube Channel
+                                        </label>
+                                        <InputText v-model="config.contact.youtube" class="w-full" placeholder="https://youtube.com/@..." />
+                                    </div>
+                                    <div class="flex flex-col items-center gap-1 pb-1">
+                                        <span class="text-[10px] text-slate-400 font-bold uppercase">Mostrar</span>
+                                        <InputSwitch v-model="config.contact.showYoutube" />
+                                    </div>
+                                </div>
+
+                                <!-- TikTok -->
+                                <div class="flex items-end gap-3">
+                                    <div class="space-y-1 flex-1">
+                                        <label class="text-xs font-bold text-slate-500 uppercase flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-tiktok text-black" viewBox="0 0 16 16">
+                                                <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3V0Z"/>
+                                            </svg> TikTok
+                                        </label>
+                                        <InputText v-model="config.contact.tiktok" class="w-full" placeholder="https://tiktok.com/@..." />
+                                    </div>
+                                    <div class="flex flex-col items-center gap-1 pb-1">
+                                        <span class="text-[10px] text-slate-400 font-bold uppercase">Mostrar</span>
+                                        <InputSwitch v-model="config.contact.showTiktok" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-xs font-bold text-slate-500 uppercase flex items-center gap-2">
-                                    <i class="pi pi-instagram text-pink-500"></i> Instagram URL
-                                </label>
-                                <InputText v-model="config.contact.instagram" class="w-full" placeholder="https://instagram.com/..." />
-                            </div>
-                        </div>
                         <div class="space-y-4">
                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
                                <div>
@@ -334,7 +383,7 @@ const config = reactive({
     schedules: [],
     info: { whatToExpect: '', socialWork: '' },
     bento: { showPrayer: true, showDonations: true, showCourses: true, donationsInfo: '' },
-    contact: { showMap: true, whatsapp: '', whatsappMessage: '', facebook: '', instagram: '', googleMapsEmbedUrl: '' }
+    contact: { showMap: true, whatsapp: '', whatsappMessage: '', facebook: '', showFacebook: true, instagram: '', showInstagram: true, youtube: '', showYoutube: false, tiktok: '', showTiktok: false, googleMapsEmbedUrl: '' }
 });
 
 const loadSettings = async () => {

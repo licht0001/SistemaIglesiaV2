@@ -548,10 +548,21 @@
         <footer class="border-t border-slate-200 bg-white py-4 text-xs text-slate-500">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
                 <p>© {{ new Date().getFullYear() }} Sistema Iglesia. Todos los derechos reservados.</p>
-                <div class="flex items-center gap-3">
-                    <a href="#" class="hover:text-emerald-700"><i class="pi pi-facebook text-sm"></i></a>
-                    <a href="#" class="hover:text-emerald-700"><i class="pi pi-instagram text-sm"></i></a>
-                    <a href="#" class="hover:text-emerald-700"><i class="pi pi-envelope text-sm"></i></a>
+                <div class="flex items-center gap-6">
+                    <a v-if="config.contact.showFacebook && config.contact.facebook" :href="config.contact.facebook" target="_blank" class="text-slate-400 hover:text-blue-600 transition-colors transform hover:scale-110">
+                        <i class="pi pi-facebook text-[40px]"></i>
+                    </a>
+                    <a v-if="config.contact.showInstagram && config.contact.instagram" :href="config.contact.instagram" target="_blank" class="text-slate-400 hover:text-pink-600 transition-colors transform hover:scale-110">
+                        <i class="pi pi-instagram text-[40px]"></i>
+                    </a>
+                    <a v-if="config.contact.showYoutube && config.contact.youtube" :href="config.contact.youtube" target="_blank" class="text-slate-400 hover:text-red-600 transition-colors transform hover:scale-110">
+                        <i class="pi pi-youtube text-[40px]"></i>
+                    </a>
+                    <a v-if="config.contact.showTiktok && config.contact.tiktok" :href="config.contact.tiktok" target="_blank" class="text-slate-400 hover:text-black transition-colors transform hover:scale-110">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-tiktok" viewBox="0 0 16 16">
+                            <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3V0Z"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </footer>
@@ -592,7 +603,7 @@ const config = reactive({
     schedules: [],
     info: { whatToExpect: '', socialWork: '' },
     bento: { showPrayer: true, showDonations: true, showCourses: true, donationsInfo: '' },
-    contact: { whatsapp: '', whatsappMessage: '', facebook: '', instagram: '', showMap: true, googleMapsEmbedUrl: '' },
+    contact: { whatsapp: '', whatsappMessage: '', facebook: '', showFacebook: true, instagram: '', showInstagram: true, youtube: '', showYoutube: false, tiktok: '', showTiktok: false, showMap: true, googleMapsEmbedUrl: '' },
     prayerRequestSuccessMessage: 'Estaremos orando por ti. ¡Dios te bendiga!'
 });
 
@@ -603,7 +614,31 @@ const upcomingEvents = ref([]);
 onMounted(async () => {
     try {
         const data = await fetchLandingSettingsPublic();
-        if (data) Object.assign(config, data);
+        if (data) {
+            // Asegurar que contact existe
+            if (!data.contact) data.contact = {};
+            
+            // Asignar defaults si no existen
+            if (data.contact.showFacebook === undefined) data.contact.showFacebook = true;
+            if (data.contact.showInstagram === undefined) data.contact.showInstagram = true;
+            // Para YouTube y TikTok, default false si no existen
+            if (data.contact.showYoutube === undefined) data.contact.showYoutube = false;
+            if (data.contact.showTiktok === undefined) data.contact.showTiktok = false;
+
+            // Merge cuidadoso para no perder reactividad
+            config.hero = { ...config.hero, ...data.hero };
+            config.video = { ...config.video, ...data.video };
+            config.info = { ...config.info, ...data.info };
+            config.bento = { ...config.bento, ...data.bento };
+            config.contact = { ...config.contact, ...data.contact };
+            
+            // Arrays directos
+            if (data.carousel) config.carousel = data.carousel;
+            if (data.testimonials) config.testimonials = data.testimonials;
+            if (data.schedules) config.schedules = data.schedules;
+            
+            if (data.prayerRequestSuccessMessage) config.prayerRequestSuccessMessage = data.prayerRequestSuccessMessage;
+        }
         
         // Cargar eventos públicos
         const eventsResponse = await api.get('/events/public');
